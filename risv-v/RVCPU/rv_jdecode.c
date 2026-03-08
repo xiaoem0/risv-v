@@ -18,7 +18,7 @@ void rv_decode_J(uint32 pc, Rvcpu_ISA_J* J_decode) {
 
 void execute_jtype(rvcpu* cpu, const Rvcpu_ISA_I* i) {
 	uint32 scr1 = cpu->Registers[i->rs1];
-	JAL_OFFSET()
+	JAL_OFFSET();
 
 	switch (i->funct3) {
 	case addi://加法立即数
