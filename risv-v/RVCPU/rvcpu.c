@@ -34,6 +34,7 @@ int rvcpu_decode(rvcpu* cpu,uint32 pc) {
 		rv_decode_r(pc, &r);
 		execute_rtype(cpu, r);
 		break;
+	case J:
 
 	}
 	//execute_rtype(cpu, );

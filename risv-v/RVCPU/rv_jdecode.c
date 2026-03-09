@@ -1,25 +1,29 @@
 #include "rvcpu.h"
-#define JAL_OFFSET(instr)  {                                        \
+#define JAL_OFFSET(instr)                                          \
     uint32_t imm20 = ((instr) >> 31) & 0x1;                          \
     uint32_t imm10_1 = ((instr) >> 21) & 0x3FF;                      \
     uint32_t imm11 = ((instr) >> 20) & 0x1;                          \
     uint32_t imm19_12 = ((instr) >> 12) & 0xFF;                      \
     uint32_t imm_20bit = (imm20 << 19) | (imm19_12 << 11) | (imm11 << 10) | imm10_1; \
     int32_t offset = imm20 ? (int32_t)(0xFFFFF000 | imm_20bit) : (int32_t)imm_20bit; \
-    offset << 1;                                                     \
-}
+    offset << 1;                                                     
+
 
 void rv_decode_J(uint32 pc, Rvcpu_ISA_J* J_decode) {
 	J_decode->opcode = pc & 0x7F;
 	J_decode->rd = (pc >> 7) & 0x1F;
-	J_decode->offset  = (pc >> 12) & 0xFF;
+	JAL_OFFSET(pc);
+	J_decode->offset  = offset;
 	return;
 }
 
-void execute_jtype(rvcpu* cpu, const Rvcpu_ISA_I* i) {
-	uint32 scr1 = cpu->Registers[i->rs1];
-	JAL_OFFSET();
+void execute_jtype(rvcpu* cpu, const Rvcpu_ISA_J* j) {
+	uint32 pc = rvcpu_get_pc(cpu)+j->offset;
 
+
+
+
+/*
 	switch (i->funct3) {
 	case addi://加法立即数
 		cpu->Registers[i->rd] = cpu->Registers[i->rs1] + imm;
@@ -63,13 +67,8 @@ void execute_jtype(rvcpu* cpu, const Rvcpu_ISA_I* i) {
 	default:
 		printf("risc-v isa not is i opcode");
 		break;
-	}
+	}*/
 
 	return;
 
-R0_0:
-	if (i->rd == 0) {
-		cpu->Registers[i->rd] = 0;
-	}
-	return;
 }
