@@ -6,7 +6,7 @@
     uint32_t imm19_12 = ((instr) >> 12) & 0xFF;                      \
     uint32_t imm_20bit = (imm20 << 19) | (imm19_12 << 11) | (imm11 << 10) | imm10_1; \
     int32_t offset = imm20 ? (int32_t)(0xFFFFF000 | imm_20bit) : (int32_t)imm_20bit; \
-    offset << 1;                                                     
+	offset << 1;  
 
 
 void rv_decode_J(uint32 pc, Rvcpu_ISA_J* J_decode) {

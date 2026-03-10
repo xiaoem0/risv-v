@@ -12,19 +12,22 @@ void rv_decode_i(uint32 pc, Rvcpu_ISA_I* I_decode) {
 void	execute_itype(rvcpu* cpu, const Rvcpu_ISA_I*  i) {
 	uint32 scr1 = cpu->Registers[i->rs1];
 	int32 imm = (i->imm)&0x800? (i->imm)|0xFFFFF000:i->imm;
-
+	int val = 0;
 
 
 	switch (i->opcode) {
 		switch (Load) {
 			case LOAD_TYPE_LB:
-				cpu->Registers[i->rd]=rvmem_read8(cpu->mem, scr1 + imm);
+				val=rvmem_read8(cpu->mem, scr1 + imm);
+				cpu->Registers[i->rd] = (val & 0x80) ? (val & 0xFFFFFF80) : val;
 				goto R0_0;
 			case LOAD_TYPE_LH:
-				cpu->Registers[i->rd] = rvmem_read16(cpu->mem, scr1 + imm);
+				val = rvmem_read16(cpu->mem, scr1 + imm);
+				cpu->Registers[i->rd] = (val & 0x8000) ? (val & 0xFFFF8000) : val;
 				goto R0_0;
 			case LOAD_TYPE_LW:
 				cpu->Registers[i->rd] = rvmem_read32(cpu->mem, scr1 + imm);
+
 				goto R0_0;
 			case LOAD_TYPE_LBU:
 				cpu->Registers[i->rd] = rvmem_read8(cpu->mem, scr1 + i->imm);

@@ -18,6 +18,7 @@ typedef enum opcode_name {
 		I = 19,
 		Store =35,
 		R = 51,
+		B=99,
 		J=111
 }Opcode;
 
@@ -84,6 +85,23 @@ typedef struct {
 	uint32 imm;
 }Rvcpu_ISA_S;
 
+//B型指令结构体
+enum B_Funt3 {
+	beq,
+	bne,
+	blt,
+	bge,
+	bltu,
+	bgeu
+};
+typedef struct {
+	Opcode opcode;
+	uint8 funt3;
+	uint8 rs1;
+	uint8 rs2;
+	uint32 imm;
+}Rvcpu_ISA_B;
+
 
 
 
@@ -124,4 +142,10 @@ void execute_jtype(rvcpu* cpu, const Rvcpu_ISA_J* j);
 //S型指令译码和执行函数
 void rv_decode_S(uint32 pc, Rvcpu_ISA_S* S_decode);
 void execute_stype(rvcpu* cpu, const Rvcpu_ISA_S* s);
+
+//B型指令译码和执行函数
+void rv_decode_B(uint32 pc, Rvcpu_ISA_B* B_decode);
+void execute_Btype(rvcpu* cpu, const Rvcpu_ISA_B* b);
+
+
 #endif

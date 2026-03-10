@@ -14,13 +14,13 @@ void rv_decode_S(uint32 pc, Rvcpu_ISA_S* S_decode) {
 void execute_stype(rvcpu* cpu, const Rvcpu_ISA_S* s) {
 	switch (s->funt3) {
 		case STORE_TYPE_SB:
-			rvmem_write8(cpu->mem, cpu->Registers[s->rs1] + s->imm, (cpu->Registers[s->rs2])>>0xFF);
+			rvmem_write8(cpu->mem, cpu->Registers[s->rs1] + s->imm, (cpu->Registers[s->rs2])&0xFF);
 			break;
 		case STORE_TYPE_SH:
-			rvmem_write16(cpu->mem, cpu->Registers[s->rs1] + s->imm, (cpu->Registers[s->rs2]) >> 0xFF);
+			rvmem_write16(cpu->mem, cpu->Registers[s->rs1] + s->imm, (cpu->Registers[s->rs2]) &0xFFFF);
 			break;
 		case STORE_TYPE_SW:
-			rvmem_write32(cpu->mem, cpu->Registers[s->rs1] + s->imm, (cpu->Registers[s->rs2]) >> 0xFF);
+			rvmem_write32(cpu->mem, cpu->Registers[s->rs1] + s->imm, (cpu->Registers[s->rs2])& 0xFFFFFFFF);
 			break;
 		default:
 			break;
